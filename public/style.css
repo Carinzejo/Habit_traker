@@ -1,0 +1,70 @@
+body {
+    font-family: system-ui, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+.container { width: 100%; max-width: 600px; }
+.controls, .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+input, select, button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #1e1e1e;
+    color: white;
+    cursor: pointer;
+}
+.weekdays, .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+.weekdays div { font-weight: bold; color: #888; padding-bottom: 5px; }
+.day-box {
+    aspect-ratio: 1 / 1;
+    background: #1e1e1e;
+    border: 2px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+.day-box:hover { border-color: #666; }
+.day-number { font-size: 0.8rem; position: absolute; top: 5px; left: 7px; color: #aaa; }
+.status-icon { font-size: 1.8rem; font-weight: bold; }
+
+/* Status Colors */
+.completed { border-color: #2ecc71; background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+.missed { border-color: #e74c3c; background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+.empty-slot { background: transparent; border: none; cursor: default; }
+/* Status Colors */
+.completed { border-color: #2ecc71; background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+.missed { border-color: #e74c3c; background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+.empty-slot { background: transparent; border: none; cursor: default; }
+
+/* Highlight Current Date */
+.today {
+    border-color: #f39c12 !important;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
+}
+/* Future Dates */
+.future {
+    opacity: 0.35;
+    border-color: #252525;
+    cursor: not-allowed;
+}
+.future:hover {
+    border-color: #252525;
+}
