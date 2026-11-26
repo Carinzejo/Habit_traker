@@ -1,11 +1,12 @@
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
 from datetime import date, timedelta
 
 app = FastAPI()
+router = APIRouter()
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -44,7 +45,7 @@ class LogEntry(BaseModel):
     log_date: str
     status: str
 
-@app.post("/api/missions")
+@router.post("/missions")
 def create_mission(mission: MissionCreate):
     init_db()
     conn = get_connection()
@@ -59,7 +60,7 @@ def create_mission(mission: MissionCreate):
     conn.close()
     return {"id": new_id, "title": mission.title}
 
-@app.get("/api/missions")
+@router.get("/missions")
 def get_missions():
     init_db()
     conn = get_connection()
@@ -69,7 +70,7 @@ def get_missions():
     conn.close()
     return missions
 
-@app.get("/api/logs/{mission_id}")
+@router.get("/logs/{mission_id}")
 def get_logs(mission_id: int):
     conn = get_connection()
     cursor = conn.cursor()
@@ -99,7 +100,7 @@ def get_logs(mission_id: int):
     conn.close()
     return {row["log_date"]: row["status"] for row in logs}
 
-@app.post("/api/log")
+@router.post("/log")
 def update_log(entry: LogEntry):
     conn = get_connection()
     cursor = conn.cursor()
@@ -122,3 +123,7 @@ def update_log(entry: LogEntry):
     conn.commit()
     conn.close()
     return {"status": entry.status, "date": entry.log_date}
+
+# Mount routes both with and without /api prefix so Vercel routing always matches
+app.include_router(router, prefix="/api")
+app.include_router(router)
